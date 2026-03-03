@@ -1,8 +1,10 @@
 mod data;
 
 use data::DataService;
-
-use crate::data::{Complex, ComplexSchema, Value, ValueSchema};
+use data::Complex;
+use data::ComplexSchema;
+use data::Value;
+use data::ValueSchema;
 
 fn main() {
 
