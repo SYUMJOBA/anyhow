@@ -69,4 +69,8 @@ impl Service {
             complex.schema_id
         })
     }
+
+    pub fn get_complexes_by_schema_id(schema_id: usize) -> Result<Vec<Arc<Mutex<Complex>>>, Error> {
+        Ok(get_buffer().iter().filter(|p| p.lock().unwrap_or_else(|p| p.into_inner()).schema_id == schema_id).cloned().collect())
+    }
 }
