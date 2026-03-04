@@ -8,7 +8,8 @@ pub(super) use service::Service as Service;
 #[derive(Clone, Debug)]
 pub struct ValueSchema {
     pub(super) name: String,
-    pub(super) kind: ValueKind
+    pub(super) kind: ValueKind,
+    pub(super) nullable: bool
 }
 
 #[derive(Clone, Debug)]
