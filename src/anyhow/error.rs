@@ -2,5 +2,6 @@
 pub enum Error {
     InvalidIndex,
     InvalidFormat,
+    AlreadyPresent,
     NotFound
 }

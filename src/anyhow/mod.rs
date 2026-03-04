@@ -10,6 +10,10 @@ pub use schema::ComplexSchema as ComplexSchema;
 pub use complex::Value as Value;
 pub use schema::ValueSchema as ValueSchema;
 pub use error::Error as ComplexProcessError;
+use valuekind::ValueKind as ValueKind;
+
+use complex::Service as ComplexService;
+use schema::Service as SchemaService;
 
 struct DataServiceHelper;
 

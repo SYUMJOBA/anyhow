@@ -2,7 +2,7 @@ use std::sync::{Mutex, MutexGuard, OnceLock};
 
 mod service;
 
-use service::Service;
+pub(super) use service::Service as Service;
 
 #[derive(Clone, Debug)]
 pub enum Value {
