@@ -1,4 +1,7 @@
-use std::sync::{Mutex, MutexGuard, OnceLock};
+
+use super::SchemaService;
+
+use super::error::Error;
 
 mod service;
 
@@ -53,8 +56,33 @@ pub enum Value {
 }
 
 #[derive(Clone, Debug)]
+pub struct Member {
+    pub(super) id: usize,
+    pub(super) value: Value
+}
+
+#[derive(Clone, Debug)]
 pub struct Complex {
     pub(super) id: usize,
     pub(super) schema_id: usize,
-    pub(super) members: Vec<Value>
+    pub(super) members: Vec<Member>
+}
+
+impl Complex {
+    pub fn get_member_id_by_name(&self, name: String) -> Result<usize, Error> {
+        SchemaService::get_schema_by_id(self.schema_id)?.lock().unwrap_or_else(|posion| posion.into_inner()).get_member_id_by_name(name)
+    }
+
+    pub fn get_member_by_id(&self, id: usize) -> Result<Member, Error> {
+        self.members.iter().find(|p| p.id == id).ok_or(Error::NotFound).cloned()
+    }
+
+    pub fn replace_value_by_id(&mut self, id: usize, new_value: Value) -> Result<(), Error> {
+        if let Some(s) = self.members.iter_mut().find(|p| p.id == id) {
+            s.value = new_value;
+            return Ok(())
+        } else {
+            return Err(Error::NotFound)
+        }
+    }
 }
