@@ -63,4 +63,10 @@ impl Service {
     pub fn get_complex_by_id(id: usize) -> Result<Arc<Mutex<Complex>>, Error> {
         get_buffer().iter().find(|c| c.lock().unwrap_or_else(|posion| posion.into_inner()).id == id).ok_or(Error::NotFound).cloned()
     }
+
+    pub fn get_schema_id_by_complex_id(complex_id: usize) -> Result<usize, Error> {
+        with_complex(complex_id, |complex| {
+            complex.schema_id
+        })
+    }
 }
