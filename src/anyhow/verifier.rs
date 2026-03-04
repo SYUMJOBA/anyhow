@@ -19,7 +19,7 @@ impl Service {
     }
 
     fn is_same_kind(schema: &ValueSchema, value: &Value) -> Result<(), ComplexProcessError> {
-        if ValueKind::from(schema) == ValueKind::from(value) {
+        if ValueKind::is_semantically_coherent(value, schema) {
             return Ok(())
         }
         Err(ComplexProcessError::InvalidFormat)
