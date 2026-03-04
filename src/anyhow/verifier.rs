@@ -11,8 +11,10 @@ impl Service {
             return Err(ComplexProcessError::InvalidFormat)
         }
 
-        for i in 0..schema.schema.len() {
-            Self::is_same_kind(&schema.schema[i], &complex.members[i])?;
+        for item in schema.schema.iter() {
+            let id = item.id;
+            let m = complex.get_member_by_id(id)?;
+            Self::is_same_kind(&item, &m.value)?;
         }
 
         Ok(())

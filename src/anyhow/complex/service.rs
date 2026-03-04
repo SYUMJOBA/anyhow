@@ -1,3 +1,5 @@
+
+use super::Member;
 use super::Complex;
 use super::Value;
 use super::super::error::Error;
@@ -28,7 +30,7 @@ fn with_complex<F, R>(id: usize, f: F) -> Result<R, Error> where F: FnOnce(&mut 
 pub struct Service;
 
 impl Service {
-    pub fn add_complex(schema_id: usize, members: Vec<Value>) -> usize {
+    pub fn add_complex(schema_id: usize, members: Vec<Member>) -> usize {
         let id = get_next_id();
         get_buffer().push(
             Arc::new(Mutex::new(Complex { id, schema_id: schema_id, members }))
@@ -55,7 +57,8 @@ impl Service {
                 return Err(Error::InvalidIndex)
             }
 
-            complex.members[value_id] = new_value;
+            complex.replace_value_by_id(value_id, new_value)?;
+
             Ok(())
         })?
     }

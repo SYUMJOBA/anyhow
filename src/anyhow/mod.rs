@@ -6,6 +6,7 @@ mod verifier;
 mod error;
 
 pub use complex::Complex as Complex;
+pub use complex::Member as Member;
 pub use schema::ComplexSchema as ComplexSchema;
 pub use complex::Value as Value;
 pub use schema::ValueSchema as ValueSchema;
@@ -25,8 +26,12 @@ pub struct DataService;
 
 impl DataService {
     // verifies that the name isn't already taken and adds the schema
-    pub fn create_schema(name: String, members: Vec<ValueSchema>) -> usize {
-        todo!()
+    pub fn create_schema(name: String, members: Vec<ValueSchema>) -> Result<usize, ComplexProcessError> {
+        if let Ok(schema) = SchemaService::get_schema_id_by_name(name.clone()) {
+            return Err(ComplexProcessError::AlreadyPresent)
+        }
+
+        SchemaService::create_schema(name, members)
     }
 
     pub fn list_schemas() -> Vec<ComplexSchema> {
@@ -34,11 +39,21 @@ impl DataService {
     }
 
     pub fn get_schema(id: usize) -> Result<ComplexSchema, ComplexProcessError> {
-        todo!()
+        Ok(SchemaService::get_schema_by_id(id)?.lock().unwrap_or_else(|p| p.into_inner()).clone())
     }
 
-    pub fn delete_schema() -> Result<(), ComplexProcessError> {
-        todo!()
+    pub fn delete_schema(id: usize) -> Result<(), ComplexProcessError> {
+        // delete all child schemas
+        let schemas = ComplexService::get_complexes_by_schema_id(id)?;
+
+        for s in schemas.iter() {
+            let id = s.lock().unwrap_or_else(|p| p.into_inner()).id;
+            ComplexService::remove_complex(id)?;
+        }
+
+        SchemaService::delete_schema(id)?;
+
+        Ok(())
     }
 
     pub fn add_member_to_schema(schema_id: usize, new_member: ValueSchema) -> Result<(), ComplexProcessError> {
