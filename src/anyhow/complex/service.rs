@@ -28,5 +28,39 @@ fn with_complex<F, R>(id: usize, f: F) -> Result<R, Error> where F: FnOnce(&mut 
 pub struct Service;
 
 impl Service {
+    pub fn add_complex(schema_id: usize, members: Vec<Value>) -> usize {
+        let id = get_next_id();
+        get_buffer().push(
+            Arc::new(Mutex::new(Complex { id, schema_id: schema_id, members }))
+        );
+        id
+    }
 
+    pub fn remove_complex(id: usize) -> Result<(), Error> {
+        let mut b = get_buffer();
+
+        let p = b.iter().position(|c| c.lock().unwrap_or_else(|p| p.into_inner()).id == id);
+
+        if let Some(i) = p {
+            b.remove(i);
+            return Ok(())
+        } else {
+            return Err(Error::NotFound)
+        }
+    }
+
+    pub fn replace_value(id: usize, value_id: usize, new_value: Value) -> Result<(), Error> {
+        with_complex(id, move |complex| {
+            if complex.members.len() >= value_id {
+                return Err(Error::InvalidIndex)
+            }
+
+            complex.members[value_id] = new_value;
+            Ok(())
+        })?
+    }
+    
+    pub fn get_complex_by_id(id: usize) -> Result<Arc<Mutex<Complex>>, Error> {
+        get_buffer().iter().find(|c| c.lock().unwrap_or_else(|posion| posion.into_inner()).id == id).ok_or(Error::NotFound).cloned()
+    }
 }
