@@ -1,6 +1,6 @@
 mod complex;
 mod schema;
-mod service;
+
 mod valuekind;
 mod verifier;
 mod error;

@@ -1,22 +1,24 @@
+use super::Value;
 use super::ValueKind;
 use super::error::Error;
 
 mod service;
 
-pub(super) use service::Service as Service;
+pub(super) use service::Service;
 
 #[derive(Clone, Debug)]
 pub struct ValueSchema {
     pub(super) id: usize,
     pub(super) name: String,
-    pub(super) kind: ValueKind
+    pub(super) kind: ValueKind,
+    pub(super) default: Option<Value>,
 }
 
 #[derive(Clone, Debug)]
 pub struct ComplexSchema {
     pub(super) id: usize,
     pub(super) name: String,
-    pub(super) schema: Vec<ValueSchema>
+    pub(super) schema: Vec<ValueSchema>,
 }
 
 impl ComplexSchema {
