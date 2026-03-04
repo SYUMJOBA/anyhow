@@ -6,7 +6,6 @@ use std::sync::MutexGuard;
 use std::sync::OnceLock;
 use std::sync::Arc;
 
-pub struct Service;
 
 static IDPROVIDER: OnceLock<Mutex<usize>> = OnceLock::new();
 fn get_next_id() -> usize {
@@ -17,3 +16,8 @@ fn get_next_id() -> usize {
 
 static BUFFER: OnceLock<Mutex<Vec<Arc<Mutex<ComplexSchema>>>>> = OnceLock::new();
 
+pub struct Service;
+
+impl Service {
+    
+}

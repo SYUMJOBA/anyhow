@@ -6,9 +6,9 @@ use super::*;
 pub struct Service;
 
 impl Service {
-    fn verify_schema(schema: &ComplexSchema, complex: &Complex) -> Result<(), ComlpexProcessError> {
+    fn verify_schema(schema: &ComplexSchema, complex: &Complex) -> Result<(), ComplexProcessError> {
         if schema.schema.len() != complex.members.len() {
-            return Err(ComlpexProcessError::InvalidFormat)
+            return Err(ComplexProcessError::InvalidFormat)
         }
 
         for i in 0..schema.schema.len() {
@@ -18,10 +18,10 @@ impl Service {
         Ok(())
     }
 
-    fn is_same_kind(schema: &ValueSchema, value: &Value) -> Result<(), ComlpexProcessError> {
+    fn is_same_kind(schema: &ValueSchema, value: &Value) -> Result<(), ComplexProcessError> {
         if ValueKind::from(schema) == ValueKind::from(value) {
             return Ok(())
         }
-        Err(ComlpexProcessError::InvalidFormat)
+        Err(ComplexProcessError::InvalidFormat)
     }
 }
