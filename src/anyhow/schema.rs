@@ -1,15 +1,14 @@
 use std::sync::{Arc, Mutex, OnceLock};
 
+use super::ValueKind;
 mod service;
 
-use service::Service as Service;
+pub(super) use service::Service as Service;
 
 #[derive(Clone, Debug)]
-pub enum ValueSchema {
-    Integer(String),
-    Float(String),
-    String(String),
-    Complex(String, usize) // schema id
+pub struct ValueSchema {
+    pub(super) name: String,
+    pub(super) kind: ValueKind
 }
 
 #[derive(Clone, Debug)]
