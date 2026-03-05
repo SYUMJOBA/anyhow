@@ -2,6 +2,7 @@
 use crate::anyhow::ComplexSchema;
 
 use super::SchemaService;
+use super::ComplexService;
 
 use super::error::Error;
 
@@ -96,5 +97,9 @@ impl Complex {
 
     pub fn get_schema(&self) -> Result<ComplexSchema, Error> {
         Ok(SchemaService::get_schema_by_id(self.schema_id)?.lock().unwrap_or_else(|poison| poison.into_inner()).clone())
+    }
+
+    pub fn get_members(&self) -> Result<Vec<Member>, Error> {
+        Ok(ComplexService::get_complex_by_id(self.id)?.lock().unwrap_or_else(|poison| poison.into_inner()).members.clone())
     }
 }
