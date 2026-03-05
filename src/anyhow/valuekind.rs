@@ -19,7 +19,7 @@ pub enum ValueKind {
 }
 
 impl ValueKind {
-    fn is_nullable(&self) -> bool {
+    pub(super) fn is_nullable(&self) -> bool {
         match self {
             ValueKind::Integer => false,
             ValueKind::Float => false,

@@ -62,7 +62,7 @@ impl Service {
             Ok(())
         })?
     }
-    
+
     pub fn get_complex_by_id(id: usize) -> Result<Arc<Mutex<Complex>>, Error> {
         get_buffer().iter().find(|c| c.lock().unwrap_or_else(|posion| posion.into_inner()).id == id).ok_or(Error::NotFound).cloned()
     }
@@ -75,5 +75,17 @@ impl Service {
 
     pub fn get_complexes_by_schema_id(schema_id: usize) -> Result<Vec<Arc<Mutex<Complex>>>, Error> {
         Ok(get_buffer().iter().filter(|p| p.lock().unwrap_or_else(|p| p.into_inner()).schema_id == schema_id).cloned().collect())
+    }
+
+    pub fn remove_member_from_complex(complex_id: usize, member_id: usize) -> Result<(), Error> {
+        with_complex(complex_id, |complex| {
+            let p = match complex.members.iter().position(|p| p.id == member_id) {
+                Some(p) => p,
+                None => return Err(Error::NotFound)
+            };
+            complex.members.remove(p);
+
+            Ok(())
+        })?
     }
 }

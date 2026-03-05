@@ -3,5 +3,6 @@ pub enum Error {
     InvalidIndex,
     InvalidFormat,
     AlreadyPresent,
+    IllegalRepresentation,
     NotFound
 }

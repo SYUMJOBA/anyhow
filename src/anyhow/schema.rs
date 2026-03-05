@@ -28,4 +28,8 @@ impl ComplexSchema {
             None => Err(Error::NotFound),
         }
     }
+
+    pub(super) fn get_member_by_id(&self, id: usize) -> Result<ValueSchema, Error> {
+        self.schema.iter().find(|p| p.id == id).ok_or(Error::NotFound).cloned()
+    }
 }
