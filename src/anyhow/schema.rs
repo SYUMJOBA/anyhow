@@ -15,7 +15,7 @@ pub struct ValueSchema {
 }
 
 impl ValueSchema {
-    pub(super) fn new(id: usize, name: String, kind: ValueKind, default: Option<Value>) -> Self {
+    pub fn new(id: usize, name: String, kind: ValueKind, default: Option<Value>) -> Self {
         Self { id, name, kind, default }
     }
 }
