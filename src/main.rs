@@ -26,5 +26,9 @@ fn main() {
     println!("{}", complex_id);
     println!("{:?}", DataService::get_complex(complex_id).expect("could not fetch complex").get_schema().expect("could not get schema"));
 
-    let members = DataService::get_complex(complex_id).expect("could not get complex").get_members();
+    let members = DataService::get_complex(complex_id).expect("could not get complex").get_named_members().expect("could not get named members");
+
+    for m in members.members.iter() {
+        println!("{} : {:?}", m.name, m.value)
+    }
 }
