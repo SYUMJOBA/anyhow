@@ -24,5 +24,7 @@ fn main() {
     ]).expect("could not add complex, why so?");
 
     println!("{}", complex_id);
-    println!("{:?}", DataService::get_complex(complex_id));
+    println!("{:?}", DataService::get_complex(complex_id).expect("could not fetch complex").get_schema().expect("could not get schema"));
+
+
 }

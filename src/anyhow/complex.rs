@@ -1,4 +1,6 @@
 
+use crate::anyhow::ComplexSchema;
+
 use super::SchemaService;
 
 use super::error::Error;
@@ -90,5 +92,9 @@ impl Complex {
         } else {
             return Err(Error::NotFound)
         }
+    }
+
+    pub fn get_schema(&self) -> Result<ComplexSchema, Error> {
+        Ok(SchemaService::get_schema_by_id(self.schema_id)?.lock().unwrap_or_else(|poison| poison.into_inner()).clone())
     }
 }
