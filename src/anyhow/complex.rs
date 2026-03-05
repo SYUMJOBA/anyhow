@@ -8,32 +8,32 @@ mod service;
 pub(super) use service::Service as Service;
 
 #[derive(Clone, Debug)]
-struct ForeignComplexPointer {
+pub(super) struct ForeignComplexPointer {
     pub(super) schema_id: usize,
     pub(super) table_id: usize
 }
 
 #[derive(Clone, Debug)]
-struct ForeignOptionalAnyComplexPointer {
+pub(super) struct ForeignOptionalAnyComplexPointer {
     pub(super) schema_id: Option<usize>,
     pub(super) table_id: Option<usize>
 }
 
 #[derive(Clone, Debug)]
-struct ForeignOptionalComplexPointer {
+pub(super) struct ForeignOptionalComplexPointer {
     pub(super) schema_id: usize,
     pub(super) table_id: Option<usize>
 }
 
 #[derive(Clone, Debug)]
-struct ForeignSelectComplexPointer {
+pub(super) struct ForeignSelectComplexPointer {
     pub(super) accepted_schemas: Vec<usize>,
     pub(super) schema_id: usize,
     pub(super) table_id: usize
 }
 
 #[derive(Clone, Debug)]
-struct ForeignOptionalSelectComplexPointer {
+pub(super) struct ForeignOptionalSelectComplexPointer {
     pub(super) accepted_schemas: Vec<usize>,
     pub(super) schema_id: usize,
     pub(super) table_id: Option<usize>
@@ -59,6 +59,12 @@ pub enum Value {
 pub struct Member {
     pub(super) id: usize,
     pub(super) value: Value
+}
+
+impl Member {
+    pub fn new(id: usize, value: Value) -> Self {
+        Self { id, value }
+    }
 }
 
 #[derive(Clone, Debug)]
