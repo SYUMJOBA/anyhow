@@ -14,6 +14,12 @@ pub struct ValueSchema {
     pub(super) default: Option<Value>,
 }
 
+impl ValueSchema {
+    pub(super) fn new(id: usize, name: String, kind: ValueKind, default: Option<Value>) -> Self {
+        Self { id, name, kind, default }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct ComplexSchema {
     pub(super) id: usize,
