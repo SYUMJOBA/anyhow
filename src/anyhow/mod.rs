@@ -11,7 +11,7 @@ pub use schema::ComplexSchema as ComplexSchema;
 pub use complex::Value as Value;
 pub use schema::ValueSchema as ValueSchema;
 pub use error::Error as ComplexProcessError;
-use valuekind::ValueKind as ValueKind;
+pub use valuekind::ValueKind as ValueKind;
 use verifier::Service as Verifier;
 
 use complex::Service as ComplexService;
@@ -36,7 +36,7 @@ impl DataService {
     }
 
     pub fn list_schemas() -> Vec<ComplexSchema> {
-        todo!()
+        SchemaService::list()
     }
 
     pub fn get_schema(id: usize) -> Result<ComplexSchema, ComplexProcessError> {
@@ -126,13 +126,17 @@ impl DataService {
         Ok(())
     }
 
-    pub fn add_complex(schema_id: usize, members: Vec<Member>) -> Result<usize, ComplexProcessError> {
+    pub fn create_complex(schema_id: usize, members: Vec<Member>) -> Result<usize, ComplexProcessError> {
         let schema = SchemaService::get_schema_by_id(schema_id)?;
         let schema = schema.lock().unwrap_or_else(|p| p.into_inner());
 
         Verifier::verify_schema(&schema, &members)?;
 
         Ok(ComplexService::add_complex(schema_id, members))
+    }
+
+    pub fn get_complex(complex_id: usize) -> Result<Complex, ComplexProcessError> {
+        Ok(ComplexService::get_complex_by_id(complex_id)?.lock().unwrap_or_else(|p| p.into_inner()).clone())
     }
 
     pub fn update_complex_member(complex_id: usize, member_index: usize, new_value: Value) -> Result<(), ComplexProcessError> {
@@ -162,6 +166,6 @@ impl DataService {
     }
 
     pub fn list_complexes() -> Vec<Complex> {
-        todo!()
+        ComplexService::list()
     }
 }

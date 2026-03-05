@@ -88,4 +88,8 @@ impl Service {
             Ok(())
         })?
     }
+
+    pub fn list() -> Vec<Complex> {
+        get_buffer().iter().map(|p| p.lock().unwrap_or_else(|p| p.into_inner()).clone()).collect()
+    }
 }
